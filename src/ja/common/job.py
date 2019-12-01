@@ -65,13 +65,13 @@ class Job:
         '''
 
     @property
-    def priority(self):
+    def priority(self) -> JobPriority:
         '''
         Get the job priority.
         '''
 
     @property
-    def status(self):
+    def status(self) -> JobStatus:
         '''
         Get the job status.
         '''
