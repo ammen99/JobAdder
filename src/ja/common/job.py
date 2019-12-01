@@ -2,7 +2,7 @@
 This module contains the definition of the Job class and related structures.
 '''
 from enum import Enum
-from docker_context import DockerConstraints, IDockerContext
+from ja.common.docker_context import DockerConstraints, IDockerContext
 
 
 class JobStatus(Enum):
