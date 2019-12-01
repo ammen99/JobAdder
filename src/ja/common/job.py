@@ -2,6 +2,7 @@
 This module contains the definition of the Job class and related structures.
 '''
 from enum import Enum
+from docker_context import DockerConstraints, IDockerContext
 
 
 class JobStatus(Enum):
@@ -31,10 +32,17 @@ class Job:
     '''
     Represents a job with all of its attributes.
     '''
-    def __init__(self, priority: JobPriority):
-        self._uid: str = None
-        self._status: JobStatus = JobStatus.NEW
-        self._priority: JobPriority = priority
+    def __init__(self,
+                 owner_id: int,
+                 priority: JobPriority,
+                 ctx: IDockerContext,
+                 constraints: DockerConstraints):
+        self._uid = None
+        self._status = JobStatus.NEW
+        self._priority = priority
+        self._ownerid = owner_id
+        self._ctx = ctx
+        self._constraints = constraints
 
     @property
     def uid(self) -> str:
@@ -51,7 +59,45 @@ class Job:
         '''
 
     @property
+    def owner_id(self) -> int:
+        '''
+        Get the id of the user who owns this job.
+        '''
+
+    @property
     def priority(self):
         '''
         Get the job priority.
+        '''
+
+    @property
+    def status(self):
+        '''
+        Get the job status.
+        '''
+
+    @status.setter
+    def status(self, new_status: JobStatus) -> None:
+        '''
+        Set the job status.
+        The following transitions are allowed:
+        NEW -> QUEUED
+        QUEUED -> KILLED | RUNNING
+        RUNNING -> PAUSED | DONE | KILLED | CRASHED
+        PAUSED -> KILLED | RUNNING
+
+        If the transition requested is not allowed, or if the job has notb
+        been assigned an UID, a RuntimeError will be raised.
+        '''
+
+    @property
+    def docker_context(self) -> IDockerContext:
+        '''
+        Get the docker context of the job.
+        '''
+
+    @property
+    def docker_constraints(self) -> DockerConstraints:
+        '''
+        Get the docker constraints of the job.
         '''
