@@ -9,5 +9,6 @@ for d in $DIRECTORIES; do
     if [ -f $d/__init__.py ]; then
         continue
     fi
+    echo "Directory $d does not contain a file __init__.py!"
     exit 1
 done
